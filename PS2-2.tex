@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+\usepackage{algorithmic}
+\usepackage{amsmath}             % This one contains many standard tools. Always include.
+\usepackage{amsfonts}             % Fonts package. May be helpful for some math commands.
+\usepackage{fancyheadings}	 	% Included to make headers (and footers, and margin text).
+\usepackage{graphicx}            % Needed only if you want to import images.
+
+% LaTeX has many different parameters used to set margins, and the default margins
+% are pretty narrow. The geometry package allows you lots of control over the margins;
+% below, we set them all to 1 in.
+\usepackage[margin=1in]{geometry}
+
+
+% Define a header to appear on all pages.
+% Note that page numbers will appear automatically.
+\pagestyle{fancyplain}
+\fancypagestyle{plain}{
+\renewcommand{\headrulewidth}{0.1pt}
+}
+% Right side of header
+\rhead{\fancyplain{Problem 2}{Problem 2}}
+
+
+\begin{document}
+
+\begin{center}
+\textbf{Problem 2}
+\end{center}
+
+\begin{center}The Curfew
+
+Writeup by Matt\end{center}
+
+\fbox{%
+    \begin{minipage}{1.0\linewidth}
+    \textbf{!AltruisticShopping}($X, p, b$):   
+               \hfill \emph{\footnotesize }
+	
+      \begin{algorithmic}[1]
+	\STATE initialize S = $\emptyset$
+	\STATE sort the items in X in decreasing order of cost
+	\WHILE {there is an item we can buy while staying under budget.}
+	 \STATE add the most expensive that we can afford item to S
+	 \STATE remove the item from X
+	\ENDWHILE
+	\STATE Return $S$
+
+
+      \end{algorithmic}
+  \end{minipage}
+  }
+
+\bigskip
+\noindent\textbf{Claim:} This algorithm is a $\frac{1}{2}$-approximation of OPT.
+
+\bigskip
+\noindent\textbf{Proof:} In each iteration through the loop, Greedy picks the most expensive affordable item and adds it to S. If the most expensive item that we could afford costed half or more of our budget, than just by adding this item, Greedy is within $\frac{1}{2}$ of OPT, even if OPT spends the entire budget. If there is no indiviual item that costs more than half of our budget, then we can certainly add two or more of the items in X in order to end up using at least half of the budget, which, again, $\frac{1}{2}$ of OPT, even if OPT uses the whole budget. Finally, if there are no items that add up to anything over half of our total budget, then Greedy and OPT will be the same, since both will simply choose all of the items.\\
+
+\noindent In the worst-case, the input will be as follows:\\
+
+\smallskip
+\noindent\textit{Worst-Case Example:} Imagine $X = \{A, B, C\}$, $p = \{\frac{1}{2}, \frac{1}{2}, \frac{1+\epsilon}{2}\}$, and $b = 1$. We sort the array, and Greedy chooses item C, since it is the most expensive item that we can afford. Now, we cannot buy any other items in X because C costs more than half of our budget, and each of the other two items cost too much. In this case, OPT is $\{A, B\}$, which means that we can buy two items for a total cost of exactly our budget. Thus, as epsilon gets arbitrarily small, the choice of C costs arbitrarily close to half of the overall budget, while OPT uses the whole budget. As such, Greedy is a $\frac{1}{2}$-approximation of OPT.
+
+\bigskip
+\noindent\textbf{Runtime:} This algorithm runs in O(nlogn) time, where n is the number of items in X. The first step of the algorithm sorts the items in X in decreasing order of cost, because we want to pick the most expensive item that we can in each iteration. This sort takes O(nlogn) time. Then, we iterate over that list at most once, so the overall runtime remains O(nlogn).
+\end{document}
