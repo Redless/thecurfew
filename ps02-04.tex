@@ -60,7 +60,7 @@ b. Half of the time, perform the algorithm above, and half the time, perform the
 
 \noindent \textbf{Cost:} Our algorithm works the exact same way as the algorithm from part a half of the time. However, we only go in the wrong direction first when $d \geq 2^i$ half of the time. The other half of the time, we go in the right direction first, and only must travel for the first $\lceil log_2(d) \rceil-1$ values of $i$ before the $d$-distance journey to the coffee shop. In this case, we only sum the first $\lceil log_2(d) \rceil-1$ powers of two, and wind up with a final distance travelled of just $2(2^{\lceil log_2(d) \rceil}-1)+d$. This is upperbounded by $5d$. Since our algorithm's running time is upperbounded by $9d$ half of the time and $5d$ the other half, in expectation our algorithm will be 7-competitive, better than the 9-competitive deterministic algorithm from part a.
 
-\noindent \textbf{Worst Case}:
+\noindent \textbf{Worst Case}: not sure
 
 \end{document}
 
