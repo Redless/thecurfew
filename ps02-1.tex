@@ -84,7 +84,19 @@ $= OPT[1-(1-\frac{1}{k})^{i+1}]$ \indent (I think this step is obvious)
 Hence the inequality holds for all $i$, so it is true that $Greedy \ge OPT[1-(1-\frac{1}{k})^k]$, and so similarly $\frac{Greedy}{OPT} \ge 1-(1-\frac{1}{k})^k$. The algorithm is no worse than a $1-(1-\frac{1}{k})^k$ approximation. 
 \\
 \\
-BIG ANNOYING DESCRIPTION OF OUR DOPE EXAMPLES
+\textbf{Worst-Case Examples}\\
+
+\vspace{3in}
+
+\bigskip
+\noindent If k = 2, we can define the problem as follows.\\
+
+\noindent Given an interval of size n, we split n up into k parts of $\frac{n}{k}$ elements each. In this case, two halves, each with $\frac{n}{2}$ elements. Then, we can create one additional interval that has $\frac{n}{2} + 1$ elements in it and contains half of the elements in each of the original two halves. The optimal solution is picking the original two intervals, which together cover all of the original interval of size n. However, Greedy picks the larger interval on the first iteration of the loop, and then is forced to pick between two intervals of roughly size $\frac{n}{4}$, as each interval left over only contains that many new elements. Thus, in the case where k = 2 and we design the problem as described, Greedy picks $\frac{3n}{4}$ items, while OPT picks n. \\
+
+\noindent As n gets arbitarily large, our result approaches $1 - (1 - \frac{1}{k})^{k}$ as follows:\\
+ $1 - (1 - \frac{1}{k})^{k} =  1 - (1 - \frac{1}{2})^{2} =  \frac{3}{4}$.
+
+\vspace{3in}
 
 \end{document}
 
