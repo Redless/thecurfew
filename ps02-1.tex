@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage{fullpage}
+\usepackage{amsmath}% http://ctan.org/pkg/amsmath
+
+\def\coursename{CS 352: Advanced Algorithms}
+\def\courseterm{Winter 2019}
+\newcommand{\lecture}[1]{
+   \noindent
+   \begin{center}
+   \framebox{
+     \vbox{\hbox to 6.28in
+    { {\bf \coursename} \hfill }%{\bf \courseterm}}
+       \hbox to 6.28in { {\it #1\hfill}}
+
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\begin{document}
+
+\lecture{Problem Set 2 -- Problem 1}
+\textbf{Main Author: Sean Gallagher (Group-mates: )}
+\\
+\\
+Let $OPT$ be the size of an optimal solution. Let $C_i$ be the elements selected by $Greedy$ after it has selected its first $i$ sets. Let $\alpha_{i+1}$ denote the number of new elements that will be covered by the $(i+1)$st set chosen by $Greedy$.
+\\
+\\
+\textbf{Claim 1:} $\alpha_{i+1} \ge \frac{OPT - |C_i|}{k}$ for all $i$ where $0 \le i < k$.
+\\
+\\
+\textbf{Proof (by contradiction):} Assume for sake of contradiction that for all $i$ where $0 \le i < k$, that $\alpha_{i+1} < \frac{OPT - |C_i|}{k}$. Notice then that $|C_i| + k\alpha_{i+1} < OPT$. 
+
+It then follows that
+\\
+\\
+$Greedy = |C_k|$    \indent (by definition)
+\\
+$=|C_i| + \alpha_{i+1} + \alpha_{i+2}+...+\alpha_{i+k}$ \indent ($Greedy$ is what was picked up to set $i$, plus what it goes on to cover)
+\\
+$ \le |C_i|+\alpha_{i+1}+\alpha_{i+1}+...+\alpha_{i+1}$ \indent (since $\alpha_{i} \ge \alpha_{i+j}$ for $j > 0$, because $Greedy$ picks largest covers first)
+\\
+$ \le |C_i|+k\alpha_{i+1}$ \indent (since there were certainly no more than $k$ $\alpha_{i+1}$'s above)
+\\
+$< OPT$ \indent (by what followed from our assumption)
+\\
+\\
+We have now found that $Greedy < OPT$. We made no assumptions about the input in proving this, so it follows that $Greedy < OPT$ in \textbf{all} cases. But this is clearly not true. Consider the simple input $S=\{a\}$, $Q = \{q_1=\{a\}\}$, and $k=1$. Clearly both $Greedy$ and $OPT$ will select $q_1$ and cover the entire set, thus giving a situation where $Greedy = OPT$. So the strictness of the earlier inequality constitutes a contradiction. This proves the claim.
+\\
+\\
+\textbf{Claim 2: } The approximation ratio is no worse than $\frac{Greedy}{OPT} \ge 1-(1-\frac{1}{k})^k$.
+\\
+\\
+\textbf{Proof: } After a quick reordering, we want to show $Greedy \ge OPT[1-(1-\frac{1}{k})^k]$.
+
+We will now prove the claim by showing that $|C_i| \ge OPT[1-(1-\frac{1}{k})^i]$ for all $i$ (thus including the end case where $i=k$, which is what we really seek to show). We will prove this by induction on the exponent $i$ in the inequality.
+
+\textit{Base case: } When $i=0$, it clearly follows that $|C_0| \ge OPT[1-(1-\frac{1}{k})^0]$ as this is just saying that $0 \ge OPT[1-1] = 0$.
+
+\textit{Inductive case: } The inductive hypothesis is that $|C_i| \ge OPT[1-(1-\frac{1}{k})^i]$. We then begin the following lines of logic from $|C_{i+1}|$:
+\\
+\\
+$|C_{i+1}| = |C_i| + \alpha_{i+1}$ \indent (by similar logic used in parts of claim 1)
+\\
+$\ge |C_i|+\frac{OPT-|C_i|}{k}$ \indent (by claim 1)
+\\
+$=(1-\frac{1}{k})|C_i| + \frac{OPT}{k}$ \indent (by rearranging the $|C_i|$ terms)
+\\
+$\ge (1-\frac{1}{k})(OPT[1-(1-\frac{1}{k})^i]) + \frac{OPT}{k}$ \indent (by inductive hypothesis)
+\\
+$= OPT[(1-\frac{1}{k})[1-(1-\frac{1}{k})^i] + \frac{1}{k}]$ \indent (by factoring out $OPT$)
+\\
+$= OPT[1 - (1-\frac{1}{k})^i-\frac{1}{k}+\frac{1}{k}(1-\frac{1}{k})^i+\frac{1}{k}]$ \indent (by multiplying out terms)
+\\
+$= OPT[1-(1-\frac{1}{k})^i + \frac{1}{k}(1-\frac{1}{k})^i]$ \indent (by cancelling out the extra $\frac{1}{k}$'s)
+\\
+$= OPT[1-(1-\frac{1}{k})(1-\frac{1}{k})^i]$ \indent (by factoring)
+\\
+$= OPT[1-(1-\frac{1}{k})^{i+1}]$ \indent (I think this step is obvious)
+\\
+\\
+Hence the inequality holds for all $i$, so it is true that $Greedy \ge OPT[1-(1-\frac{1}{k})^k]$, and so similarly $\frac{Greedy}{OPT} \ge 1-(1-\frac{1}{k})^k$. The algorithm is no worse than a $1-(1-\frac{1}{k})^k$ approximation. 
+\\
+\\
+BIG ANNOYING DESCRIPTION OF OUR DOPE EXAMPLES
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
