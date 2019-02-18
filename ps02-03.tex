@@ -1,0 +1,210 @@
+% rubber: clean PS2-2.tex
+\documentclass[12pt]{article}
+\usepackage{algorithmic}
+\usepackage{amsmath}             % This one contains many standard tools. Always include.
+\usepackage{amsfonts}             % Fonts package. May be helpful for some math commands.
+\usepackage{fancyheadings}	 	% Included to make headers (and footers, and margin text).
+\usepackage{graphicx}            % Needed only if you want to import images.
+
+% LaTeX has many different parameters used to set margins, and the default margins
+% are pretty narrow. The geometry package allows you lots of control over the margins;
+% below, we set them all to 1 in.
+\usepackage[margin=1in]{geometry}
+
+
+% Define a header to appear on all pages.
+% Note that page numbers will appear automatically.
+\pagestyle{fancyplain}
+\fancypagestyle{plain}{
+\renewcommand{\headrulewidth}{0.1pt}
+}
+% Right side of header
+\rhead{\fancyplain{Problem 3}{Problem 3}}
+
+
+\begin{document}
+
+\begin{center}
+\textbf{Problem 3}
+\end{center}
+
+\begin{center}The Curfew
+
+Writeup by Blake\end{center}
+\begin{itemize}
+	\item[(A)] Shortest Superstring's greedy approximation is thought to be a 2-approximation, but that hasn't yet been proved. Here, I'll give a family of instances that show that Greedy cannot be better than a 1.5-approximation.
+
+\fbox{%
+    \begin{minipage}{1.0\linewidth}
+    \textbf{Shortest Superstring Example}:   
+               \hfill \emph{\footnotesize }
+	
+    
+	\\Consider set $S=\{abcd,cdbc,bcde\}$
+	\\$S_1$ has an overlap of 3 with $S_3$.
+	\\Both $S_1$ and $S_3$ have an overlap of 2 with $S_2$.
+	\\This means that Greedy will first combine $S_1$ and $S_3$.
+	\\$S'=\{abcde,cdbc\}$
+	\\However, now $S'_1$ and $S'_2$ have no overlap. This means that greedy will be forced to just concatenate them.
+	\\$G: abcdecdbc$, for a total length of $9$.
+	\\Now, consider opt, where we include $S_2$ in between $S_1$ and $S_3$.
+	\\$OPT: abcdbcde$, for a total length of $8$.
+
+
+
+    
+  \end{minipage}
+  }
+
+\bigskip
+\noindent\textbf{Claim:} This pattern can be generalized to show that Greedy is no better than a 1.5 approximation.
+
+\fbox{%
+    \begin{minipage}{1.0\linewidth}
+    \textbf{Generalized Example}:   
+               \hfill \emph{\footnotesize }
+	
+    
+	\\Consider a set $S$ with 3 strings as follows.
+	\begin{itemize}
+		\item $S_1$ starts with a unique character, followed by a sequence of $n$ characters, giving $S_1$ a length of $n+1$ characters.
+		\item $S_3$ starts with an identical sequence of $n$ characters as $S_1$, ending with a unique character. This gives $S_3$ a length of $n+1$ as well, and means that $S_1$ and $S_3$ have an overlap of $n$ characters.
+		\item $S_2$ consists of the last $n-1$ characters of $S_1$ concatenated with the first $n-1$ characters of $S_3$. This gives both $S_1$ and $S_3$ an overlap of $n-1$ with $S_2$, and gives $S_2$ a total length of $2n-2$ characters.
+	\end{itemize}
+
+  \end{minipage}
+  }
+
+  \bigskip
+  \noindent\textbf{Proof:}
+	\\Let's consider what Greedy and OPT will do for this generalized case.
+	\begin{itemize}
+		\item[\textbf{Greedy}]\\
+		\\\hfill
+		\\The greatest overlap in $S$ is an overlap of length $n$ between $S_1$ and $S_3$, so, like in our previous case, greedy will merge those, getting a string $S'_1$ such that $S'_1$ starts and ends with unique characters, with $n$ overlapped characters in between.
+		\\Because $S'_1$ starts and ends with unique characters, greedy will be forced to concatenate $S_2$ on to the end.
+		\\G: $|S'_1| + |S_2| = (1 + n + 1) + (2n-2) = 3n$ characters.
+		\item[\textbf{OPT}]\\
+		\\\hfill
+		\\OPT will concatenate $S_1$ and $S_3$, which means that $S_2$ will be completely covered, as $S_2$ is the last $n-1$ characters of $S_1$ and the first $n-1$ characters of $S_3$.
+		\\OPT: $|S_1| + |S_3| = (1 + n) + (n + 1) = 2n+2$.
+	\end{itemize}
+	\\In this generalized example, we can pick any integer for $n\geq3$. In our first example, $n=3$. This is the smallest possible, because with $n<3$, $|S_2| \leq 1$, which doesn't work as $S_2$ would then be a strict substring of either $S_1$ or $S_3$. However, if we choose a very large value for $n$...
+	$$\lim_{n\rightarrow\infty}\frac{G}{OPT} = \lim_{n\rightarrow\infty}\frac{3n}{2n+2} = 3/2 = 1.5$$
+	\\So, as we increase the length of our strings, the greedy solution becomes 1.5 times as many characters as the optimal solution.
+
+
+
+	\item[(B)] Although we tried, we could not find any example, generalized or not, that resulted in Greedy being worse than a 1.5 approximation. Here's one of our attempts, though.
+	\bigskip
+
+	\fbox{%
+    \begin{minipage}{1.0\linewidth}
+    \textbf{Shortest Superstring Alternative Example}:   
+               \hfill \emph{\footnotesize }
+	
+    
+	\\Consider set $S=\{$abcd, cdbc, bcdef, efde, defg$\}$
+	\\This case is basically our last case, only this time we've repeated it twice.
+	\\Greedy will first combine $S_1$,$S_3$, and $S_5$.
+	\\$S'=\{$abcdefg, cdbc, efde$\}$
+	\\Then, like before, it will be forced to concatenate.
+	\\$G:$ abcdefgcdbcefde, for a total length of $15$.
+	\\Now, consider opt, where, as before, we concatenate $S_1$,$S_3$, and $S_5$, instead of combining them.
+	\\$OPT:$ abcdbcdefdefg, for a total length of $13$
+  \end{minipage}
+  }
+
+\bigskip
+
+  \noindent\textbf{Claim:}
+  \\Even if we generalize this and allow for $k$ repetitions of our pattern, this is still only a 1.5 approximation case.
+
+  \bigskip
+
+  \fbox{%
+    \begin{minipage}{1.0\linewidth}
+    \textbf{Generalized Alternative Example}:   
+               \hfill \emph{\footnotesize }
+	
+    
+	\\Consider set $S=\{S_1...S_{k+3}\}$ where 
+	\begin{enumerate}
+		\item $S_1$ is a unique letter followed by $n$ characters shared with $S_3$
+		\item $S_{k+3}$ is $n$ shared characters with $S_{k+1}$ followed by a unique letter
+		\item $S_{i}$ where $i$ is even is the last $n-1$ characters of $S_{i-1}$ followed by the first $n-1$ characters of $S_{i+1}$
+		\item $S_{i}$ where $i$ is odd is $2n-1$ characters in length, where the first $n$ characters are shared with $S_{i-2}$ and the last $n$ characters are shared with $S_{i+2}$.
+	\end{enumerate}
+	\\This is hard to explain in writing-- it can be visualized much more easily like so.
+	\\Odd: $1 + n$\kern 2pc $k(2n-1)$\kern 2pc $n+1$
+	\\Even: \kern 2pc $2n-2$\kern 2pc $k(2n-2)$
+	\\Again, the above examples are subsets of this. The first example is $k=0, n=3$, and the second example is $k=1, n=3$.
+	\\The middle odd sections are required to be length $2n-1$ such that none of the even sections will have overlaps with each other.
+	
+  \end{minipage}
+  }
+
+\bigskip
+
+\noindent\textbf{Claim:} This is still only a 1.5-approximation, regardless of $k$ and $n$.
+
+\bigskip
+
+\noindent\textbf{Proof:}
+\\Consider greedy in this case.
+\\First, greedy will merge all of the odd strings. The first one is length $n+1$, and all subsequent merges add $n-1$ new characters, except for the last one, which only adds 1.
+\\So, the length of all the odd strings merged is 
+\\$(1 + n) + k(n-1) + 1 = n+2 + k(n-1)$
+\\All the even strings then have to be concatenated, giving us
+\\$G= n+2 + k(n-1) + (2n-2) + k(2n-2) = 3n + k(3n-3)$
+\\Now, let's compare this to OPT. OPT will be, as usual, all the odd strings concatenated, not merged, like in the example.
+\\$OPT = (1+n) + k(2n-1) + (n+1) = 2n+2 + k(2n-1)$.
+
+$$lim_{k,n\rightarrow\infty}\frac{G}{OPT} = lim_{k,n\rightarrow\infty}\frac{3n + k(3n-3)}{2n+2 + k(2n-1)}$$
+\\In the above limit, the terms that will be relevant to end behavior are the $kn$ terms, because $lim_{k,n\rightarrow\infty}\frac{a + b*k +c*n}{d*kn}=0$ where $a,b,c$, and $d$ are constants.
+\\So, rewriting our limit with only the $kn$ terms gives us... $$lim_{k,n\rightarrow\infty}\frac{3kn}{2kn} = 3/2 = 1.5$$
+
+\\So, again, it's still only a 1.5 approximation even if we repeat this pattern infinitely.
+
+\item[(C)] \textbf{Claim:} Given an $\alpha$-approximation algorithm for the shortest superstring problem in a binary alphabet, show that the general shortest superstring problem is solvable in an $\alpha$-approximation.
+\bigskip
+
+\noindent\textbf{Proof:}
+\\Our algorithm to solve the general shortest superstring problem is the following.
+\begin{enumerate}
+	\item Translate the given alphabet (and all strings in $S$) into a binary alphabet in $P$-time, with the following conditions:
+	\begin{itemize}
+		\item[(A)] New binary alphabet must not have overlaps.
+		\item[(B)] New binary alphabet must have all characters taking the same number of binary bits.
+	\end{itemize}
+	These conditions assure us that approximation factor $\alpha$ will not change during solving.
+	\item Use the binary $\alpha$-approximation algorithm.
+	\item Translate the binary $\alpha$-approximation back into the given alphabet.
+\end{enumerate}
+\\Step 2 is trivial, and step 3 is trivial if I can prove the conditions set in step 1-- that is, there is no overlap of letters, meaning that the answer from step 2 will be fully translatable. 
+\\Let us define our translation to a binary alphabet as follows.
+\\For an alphabet $A=\{A_1,A_2,...A_k\}$, let us redefine $A_i$ in binary as $A_i = 0^i(01)^{k+1-i}1^i$.
+\\First, let's show condition (B), that is, that all of our new binary characters will have the same length. 
+\\\textbf{Proof by Induction:}
+\\Base case: $A_1$ is length $2+k$, that is, $|A_1| = 2+k$.
+\\Induction Hypothesis: Assume $A_i$ is length $2+k$.
+\\Induction Step: $|A_{i+1}| = |0^{i+1}| + |(01)^{k+1-(i+1)}| + |1^{i+1}|$
+\\$|A_{i+1}| = 1+|0^{i}| + |(01)^{k+1-i-1}| + 1+|1^{i}|$
+\\$|A_{i+1}| = 2+|0^{i}| + |(01)^{k+1-i}| - |01| + |1^{i}|$
+\\$|A_{i+1}| = 2 - 2 + |0^{i}| + |(01)^{k+1-i}| + |1^{i}|$
+\\$|A_{i+1}| = 2 - 2 + |A_i|$
+\\$|A_{i+1}| = |A_i|$
+\\Therefore, by induction, all letters in our new binary alphabet will contain $k+2$ binary letters.
+\\
+\\Now, we can show condition (A), that all binary strings for our new alphabet characters are unique.
+\\\textbf{Proof by Contradiction:}
+\\Suppose towards contradiction that an overlap exists, that is,
+\\$\exists $distinct $A_i,A_j:\exists S : S $ is a suffix of $A_i$ and a prefix of $A_j$.
+\\Because we indexed from 1, all of our binary strings begin with at least 2 $0$'s and end with at least 2 $1$'s. So, $S$ must include at least 2 $0$'s and at least 2 $1$'s. (Rembember, $A_i = 0^i(01)^{k+1-i}1^i$.)
+\\$S$, by definition, occurs in both strings. So, if $S$ spans from at least the last occurance of $00$ to the first occurance of $11$ in $A_i$, then it must contain the entirety of $(01)^{k+1-i}$. However, the same holds true for $A_j$. So, for $S$ to exist, $k+1-i = k+1-j$. This is only true if $i=j$, which would mean that $A_i=A_j$. This is a contradiction, as we assumed that $A_i$ and $A_j$ were distinct. Therefore, there cannot exist 2 distict strings in our new binary alphabet that have overlap.
+\\
+\\So, since conditions (A) and (B) are both satisfied, when we run our binary $\alpha$ approximation, no binary string ''letters'' will be overlapped, and we can therefore translate our $\alpha$-approximate solution back through our alphabet.
+
+
+\end{itemize}
+\end{document}
